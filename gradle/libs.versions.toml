@@ -11,8 +11,8 @@ app-database-name = "closetalk.db"
 
 # Plugins
 android-gradle = "8.11.1"
-kotlin = "2.2.0"
-ksp = "2.2.0-2.0.2"
+kotlin = "2.1.21"
+ksp = "2.1.21-2.0.2"
 kotlin-coroutines = "1.10.2"
 kotlin-serialization = "1.4.1"
 google-services = "4.4.3"
