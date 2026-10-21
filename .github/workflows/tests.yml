@@ -29,6 +29,7 @@ jobs:
   remove-artifacts:
     permissions:
       actions: write
+      contents: read
     uses: ./.github/workflows/clean-up-artifacts.yml
     needs: run-tests
     # Run this job even if "needs" job is failed
