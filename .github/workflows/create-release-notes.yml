@@ -4,6 +4,9 @@ on:
   # Enables this workflow to be called from other workflows
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   create-release-notes:
     runs-on: ubuntu-latest
@@ -13,7 +16,7 @@ jobs:
       RELEASE_NOTES_PATH: ./doc/RELEASE_NOTES.md
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Check Release Notes file exists
         run: |
@@ -63,7 +66,7 @@ jobs:
           release_notes_${{ env.TAG_NAME }}.txt
 
       - name: Upload Release Notes to GitHub Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: release_notes
           path: release_notes_${{ env.TAG_NAME }}.txt

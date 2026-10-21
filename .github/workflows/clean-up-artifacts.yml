@@ -4,12 +4,17 @@ on:
   # Enables this workflow to be called from other workflows
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   remove-artifacs:
+    permissions:
+      actions: write
     runs-on: ubuntu-latest
 
     steps:
-      - uses: geekyeggo/delete-artifact@v5
+      - uses: geekyeggo/delete-artifact@f275313e70c08f6120db482d7a6b98377786765b # v5.1.0
         with:
           name: |
             bundles

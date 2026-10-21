@@ -8,6 +8,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
 
   create-release-notes:
@@ -25,6 +28,8 @@ jobs:
     secrets: inherit
 
   create-github-release:
+    permissions:
+      contents: write
     uses: ./.github/workflows/create-github-release.yml
     needs: build-signed-bundle
     secrets: inherit
@@ -36,6 +41,9 @@ jobs:
 
   # It allow to remove artifacts created to use between workflows (google service json, bundles, etc)
   remove-artifacts:
+    permissions:
+      actions: write
+      contents: read
     uses: ./.github/workflows/clean-up-artifacts.yml
     needs: deploy-to-production-track
     # Run this job even if "needs" job is failed
