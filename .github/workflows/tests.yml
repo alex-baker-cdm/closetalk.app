@@ -11,6 +11,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
 
   create-service-json:
@@ -24,6 +27,8 @@ jobs:
 
   # It allow to remove artifacts created to use between workflows (google service json, bundles, etc)
   remove-artifacts:
+    permissions:
+      actions: write
     uses: ./.github/workflows/clean-up-artifacts.yml
     needs: run-tests
     # Run this job even if "needs" job is failed

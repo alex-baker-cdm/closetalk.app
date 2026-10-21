@@ -7,6 +7,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
 
   deploy-to-google-play-production-draft:
@@ -15,19 +18,19 @@ jobs:
       DOWNLOADS_PATH: ./downloaded-artifacts
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Echo path to download bundles
         run: echo "Download bundles path is ${ARTIFACTS_PATH}"
 
       - name: Download bundles from GitHub Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: bundles
           path: ${{ env.DOWNLOADS_PATH }}
 
       - name: Download Release Notes from GitHub Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: release_notes
           path: ${{ env.DOWNLOADS_PATH }}
@@ -56,7 +59,7 @@ jobs:
           ${DOWNLOADS_PATH}/whatsnew/whatsnew-en-US   
 
       - name: Upload to Google Play
-        uses: r0adkll/upload-google-play@v1
+        uses: r0adkll/upload-google-play@e738b9dd8f2476ea806d921b64aacd24f34515a5 # v1.1.5
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           # Replace with your package name

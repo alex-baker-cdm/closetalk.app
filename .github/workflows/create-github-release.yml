@@ -4,27 +4,32 @@ on:
   # Enables this workflow to be called from other workflows
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   create-github-release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     # Setting up ENV for all steps in this job
     env:
       DOWNLOADS_PATH: ./downloaded-artifacts
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Echo path to download bundles
         run: echo "Download bundles path is ${DOWNLOADS_PATH}"
 
       - name: Download bundles from GitHub Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: bundles
           path: ${{ env.DOWNLOADS_PATH }}
 
       - name: Download Release Notes from GitHub Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: release_notes
           path: ${{ env.DOWNLOADS_PATH }}
@@ -52,23 +57,14 @@ jobs:
           cat release_notes_${GITHUB_REF#refs/tags/}.txt >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Create GitHub Release
+      - name: Create GitHub Release and upload bundles
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provided by Actions, no need to create this secret yourself
         with:
           tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
           body: ${{ env.RELEASE_NOTES }}
           draft: false
           prerelease: false
-
-      - name: Upload bundles to GitHub Release
-        id: upload-release-assets
-        uses: dwenegar/upload-release-assets@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          release_id: ${{ steps.create_release.outputs.id }}
-          assets_path: ${{ env.DOWNLOADS_PATH }}/*/
+          files: ${{ env.DOWNLOADS_PATH }}/*/*
